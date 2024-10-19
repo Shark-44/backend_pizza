@@ -1,14 +1,14 @@
-Mon Projet Pizza-Backend Node.js
-Description
+#Mon Projet Pizza-Backend Node.js
+##Description
 
 Ce projet est un backend construit avec Node.js et Express. Il utilise MySQL pour la base de données et est configuré avec ESLint, Prettier, et Nodemon pour le développement.
 Installation
-Prérequis
+##Prérequis
 
     Node.js et npm installés sur votre machine.
     Une base de données MySQL.
 
-Étapes d'installation
+##Étapes d'installation
 
     Cloner le projet :
 
