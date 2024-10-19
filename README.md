@@ -1,85 +1,68 @@
-# Mon Projet Pizza-Backend Node.js
+# Pizza Backend Node.js Project
+
 ## Description
+This project is a backend built with Node.js and Express. It uses MySQL for the database and is configured with ESLint, Prettier, and Nodemon for development.
 
-Ce projet est un backend construit avec Node.js et Express. Il utilise MySQL pour la base de données et est configuré avec ESLint, Prettier, et Nodemon pour le développement.
-Installation
-## Prérequis
+## Prerequisites
+- **Node.js** and **npm** installed on your machine.
+- A **MySQL** database.
 
-    Node.js et npm installés sur votre machine.
-    Une base de données MySQL.
+## Installation Steps
+1. **Clone the project**:
+   ```bash
+   git clone https://github.com/Shark-44/backend_pizza
+   cd backend_pizza
+   ```
 
-## Étapes d'installation
+2. **Install dependencies**:
+   ```bash
+   npm install
+   ```
 
-  1.  **Cloner le projet** :
+3. **Configure environment variables**:
+   Create a .env file at the root of the project and add the necessary variables. Example:
+   ```
+   PORT=3000
+   DB_HOST=localhost
+   DB_USER=root
+   DB_PASSWORD=your_password
+   DB_NAME=database_name
+   ```
 
-    bash
+## npm Scripts
+Here are the different commands you can use to manage the project.
 
-git clone https://github.com/Shark-44/backend_pizza
-cd backend_pizza
+### Starting the Server
+- **In development mode** (with automatic reloading of changes):
+  ```bash
+  npm run dev
+  ```
+- **In production mode**:
+  ```bash
+  npm start
+  ```
 
-2. **Installer les dépendances** :
+## Linting & Formatting
+- **Check code for style errors**:
+  ```bash
+  npm run lint
+  ```
+- **Automatically fix style errors**:
+  ```bash
+  npm run fix
+  ```
 
-bash
+## Database Migration
+- **Run migrations** (if a migrate.js file exists to handle migrations):
+  ```bash
+  npm run migrate
+  ```
 
-npm install
+## Project Structure
+- `index.js`: Main file where the Express application starts.
+- `.env`: Environment variables for project configuration.
+- `node_modules/`: Directory containing project dependencies.
+- `package.json`: File listing dependencies and npm scripts.
 
-3. **Configurer les variables d'environnement** :
-
-Créez un fichier .env à la racine du projet et ajoutez les variables nécessaires. Exemple :
-
-makefile
-
-    PORT=3000
-    DB_HOST=localhost
-    DB_USER=root
-    DB_PASSWORD=mot_de_passe
-    DB_NAME=nom_de_la_base
-
-## Scripts npm
-
-Voici les différentes commandes que vous pouvez utiliser pour gérer le projet.
-### Démarrage du serveur
-
-    **. En mode développement (avec rechargement automatique des changements) :**
-
-```bash
-npm run dev
-```
-    **. En mode production :**
-
-```bash
-npm start
-```
-
-## Linting & Formatage
-
-   **. Vérifier le code pour les erreurs de style :**
-
-```bash
-npm run lint
-```
-
-Corriger automatiquement les erreurs de style :
-
-```bash
-npm run fix
-```
-
-## Migration de base de données
-
-   **. Exécuter les migrations** (si un fichier migrate.js existe pour gérer les migrations) :
-
-```bash
-npm run migrate
-```
-
-## Structure du projet
-
-    index.js : Fichier principal où l'application Express démarre.
-    .env : Variables d'environnement pour la configuration du projet.
-    node_modules/ : Répertoire contenant les dépendances du projet.
-    package.json : Fichier listant les dépendances et les scripts npm.
-
-## Utilisation
-
-Après avoir démarré le serveur, accédez à http://localhost:4242 pour voir l'application en action.
+## Usage
+After starting the server, access http://localhost:4242 to see the application in action.
