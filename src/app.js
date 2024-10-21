@@ -1,3 +1,4 @@
+const path = require("node:path")
 const express = require('express');
 const cors = require('cors');
 const app = express();
@@ -17,5 +18,5 @@ app.use(express.json());
 
 const router = require('./router');
 app.use(router);
-
+app.use(express.static(path.join(__dirname, "../public")))
 module.exports = app;
