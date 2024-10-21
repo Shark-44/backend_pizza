@@ -1,12 +1,21 @@
-// create express app
 const express = require('express');
+const cors = require('cors');
 const app = express();
-const port = 3000;
 
-// import and mount the API routes
-const router = require("./router")
-app.use(router)
+app.use(
+  cors({
+    origin: "http://localhost:5173",
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization'],
+    credentials: true,
+    optionsSuccessStatus: 200,
+  })
+);
 
-// ready to export
 
-module.exports = app
+app.use(express.json());
+
+const router = require('./router');
+app.use(router);
+
+module.exports = app;
