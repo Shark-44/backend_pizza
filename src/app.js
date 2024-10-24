@@ -1,3 +1,22 @@
+const path = require("node:path")
 const express = require('express');
+const cors = require('cors');
 const app = express();
-const port = 3000;
+
+app.use(
+  cors({
+    origin: "http://localhost:5173",
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization'],
+    credentials: true,
+    optionsSuccessStatus: 200,
+  })
+);
+
+
+app.use(express.json());
+
+const router = require('./router');
+app.use(router);
+app.use(express.static(path.join(__dirname, "../public")))
+module.exports = app;
