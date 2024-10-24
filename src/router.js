@@ -14,5 +14,8 @@ router.get("/products/", productsController.browse)
 router.get("/products/bytype/", productsController.allbytype)
 router.get("/types/", typesController.browse)
 router.get("/orders/", ordersController.browse)
-router.get("/inbasket/", basketController.browse)
+router.get("/basket/", basketController.browse)
+router.post("/basket/", basketController.add)
+router.put("/basket/", basketController.edit)
+
 module.exports = router
