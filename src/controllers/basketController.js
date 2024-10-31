@@ -2,7 +2,7 @@ const models = require("../models")
 
 const browse = (req, res) => {
 
-  models.basket
+  models.baskets
     .findAll()
     .then(([rows]) => {
       res.send(rows)
@@ -13,25 +13,26 @@ const browse = (req, res) => {
     })
 }
 const add = (req, res) => {
-    const basket = req.body
+    const {produit_id, commande_id, quantiteCommande} = req.body
+    console.log(produit_id, commande_id, quantiteCommande)
+    if (!produit_id|| !commande_id || !quantiteCommande) {
+      return res.status(400).json({ error: "Données manquantes" });
+    }
    
-    models.basket
-    .insert(basket)
+    models.baskets
+    .insert({produit_id, commande_id, quantiteCommande})
     .then(([result]) => {
-      return models.basket.find(result.insertId);  
-    })
-    .then(([rows]) => {
-      res.status(201).json(rows[0]); 
+      res.json({ produit_id, commande_id, quantiteCommande });
     })
     .catch((err) => {
-      console.error(err);
-      res.sendStatus(500);
-    });
-};
+      console.error(err)
+      res.sendStatus(500)
+    })
+}
 const edit = (req, res) => {
     const basket = req.body
  
-    models.basket
+    models.baskets
       .update(basket)
       .then(([result]) => {
         if (result.affectedRows === 0) {
