@@ -14,7 +14,7 @@ const browse = (req, res) => {
 }
 const add = (req, res) => {
     const {produit_id, commande_id, quantiteCommande} = req.body
-    console.log(produit_id, commande_id, quantiteCommande)
+
     if (!produit_id|| !commande_id || !quantiteCommande) {
       return res.status(400).json({ error: "Données manquantes" });
     }
@@ -29,9 +29,9 @@ const add = (req, res) => {
       res.sendStatus(500)
     })
 }
-const edit = (req, res) => {
+const upQuantite = (req, res) => {
     const basket = req.body
- 
+ console.log(basket)
     models.baskets
       .update(basket)
       .then(([result]) => {
@@ -47,6 +47,6 @@ const edit = (req, res) => {
       })
   }
 module.exports = {
-    browse, add, edit,
+    browse, add, upQuantite,
 
   }

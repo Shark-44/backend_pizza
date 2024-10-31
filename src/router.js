@@ -16,9 +16,10 @@ router.get("/products/:id", productsController.read)
 router.get("/productsbytype/", productsController.allbytype)
 router.get("/types/", typesController.browse)
 router.get("/orders/", ordersController.browse)
+router.get("/orders/:id", ordersController.fullorder)
 router.post("/orders/", ordersController.createnumber)
 router.get("/basket/", basketController.browse)
 router.post("/basket/", basketController.add)
-router.put("/basket/", basketController.edit)
+router.put("/basket/", basketController.upQuantite)
 
 module.exports = router

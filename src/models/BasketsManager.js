@@ -18,12 +18,13 @@ class BasketsManager extends AbstractManager {
     return this.database.query(
         `UPDATE ${this.table} SET quantiteCommande = ? WHERE produit_id = ? AND commande_id = ?`,
       [
-        basket.produit_id,
-        basket.commande_id,
-        basket.quantiteCommande,
+        basket.quantiteCommande,  
+        basket.produit_id,        
+        basket.commande_id,      
       ]
-    )
-  }
+    );
+}
+
 
 }
 

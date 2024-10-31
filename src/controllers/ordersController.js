@@ -29,7 +29,23 @@ const createnumber = (req, res) => {
     res.sendStatus(500)
   })
 }
+const fullorder = async (req, res) => {
+  try {
+    const orderData = await models.orders.find(req.params.id);
+    
+    if (!orderData) {
+      return res.status(404).json({ message: "Commande non trouvée" });
+    }
+
+    res.json(orderData);
+
+  } catch (error) {
+    console.error("Erreur dans fullorder:", error);
+    res.status(500).json({ message: "Erreur serveur" });
+  }
+};
+
 
 module.exports = {
-    browse, createnumber,
+    browse, createnumber, fullorder,
   }
