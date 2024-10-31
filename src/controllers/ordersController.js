@@ -45,7 +45,6 @@ const fullorder = async (req, res) => {
   }
 };
 
-
 module.exports = {
     browse, createnumber, fullorder,
   }
