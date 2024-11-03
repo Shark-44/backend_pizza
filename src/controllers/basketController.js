@@ -31,7 +31,7 @@ const add = (req, res) => {
 }
 const upQuantite = (req, res) => {
     const basket = req.body
- console.log(basket)
+
     models.baskets
       .update(basket)
       .then(([result]) => {
@@ -46,7 +46,25 @@ const upQuantite = (req, res) => {
         res.sendStatus(500)
       })
   }
+
+  const delbasket = (req, res) => {
+    const basket = req.body;
+  
+    models.baskets
+    .destroy(basket)
+    .then(([result]) => {
+      if (result.affectedRows === 0) {
+        res.sendStatus(404)
+      } else {
+        res.sendStatus(204)
+      }
+    })
+    .catch((err) => {
+      console.error(err)
+      res.sendStatus(500)
+    })
+  }
 module.exports = {
-    browse, add, upQuantite,
+    browse, add, upQuantite, delbasket,
 
   }

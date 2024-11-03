@@ -44,7 +44,25 @@ const fullorder = async (req, res) => {
     res.status(500).json({ message: "Erreur serveur" });
   }
 };
+const finalorder = (req, res) => {
+  const  order = req.body
+
+  models.orders
+
+  .update(order)
+  .then(([result]) => {
+    if (result.affectedRows === 0) {
+      res.sendStatus(400)
+    } else {
+      res.sendStatus(200)
+    }
+  })
+  .catch((err) => {
+    console.error(err)
+    res.sendStatus(500)
+  })
+}
 
 module.exports = {
-    browse, createnumber, fullorder,
+    browse, createnumber, fullorder, finalorder,
   }

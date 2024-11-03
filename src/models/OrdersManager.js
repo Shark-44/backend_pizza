@@ -5,6 +5,8 @@ class OrdersManager extends AbstractManager {
     super({ table: "commande" });
   }
   insert(number) {
+
+
     return this.database.query(
       `insert into ${this.table} (numeroCommande, timestamp, statusCommande) values (?,?,?)`,
       [
@@ -69,6 +71,17 @@ class OrdersManager extends AbstractManager {
       throw error;
     }
   }
+  update(order) {
+    console.log(order)
+    return this.database.query(
+        `UPDATE ${this.table} SET prixtotalCommande = ?, statusCommande = ? WHERE id = ?`,
+        [
+            order.prixtotalCommande,  
+            order.statusCommande,
+            order.id 
+        ]
+    );
+}
 }
 
 

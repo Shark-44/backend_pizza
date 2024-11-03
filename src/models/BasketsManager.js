@@ -23,8 +23,18 @@ class BasketsManager extends AbstractManager {
         basket.commande_id,      
       ]
     );
-}
+  }
+  destroy(basket) {
+   
+    return this.database.query(
+      `DELETE FROM ${this.table}  WHERE produit_id = ? AND commande_id = ?`,
+      [
+        basket.produit_id,        
+        basket.commande_id,      
+      ]
+    )
 
+  }
 
 }
 
