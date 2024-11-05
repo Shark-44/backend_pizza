@@ -72,7 +72,7 @@ class OrdersManager extends AbstractManager {
     }
   }
   update(order) {
-    console.log(order)
+
     return this.database.query(
         `UPDATE ${this.table} SET prixtotalCommande = ?, statusCommande = ? WHERE id = ?`,
         [
