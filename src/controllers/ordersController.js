@@ -1,9 +1,10 @@
 const models = require("../models")
 
 const browse = (req, res) => {
+  const { language } = req;
 
   models.orders
-    .findAll()
+    .findAll(language)
     .then(([rows]) => {
       res.send(rows)
     })
@@ -31,37 +32,38 @@ const createnumber = (req, res) => {
 }
 const fullorder = async (req, res) => {
   try {
-    const orderData = await models.orders.find(req.params.id);
-    
+    const { id } = req.params;
+    const { language } = req;
+
+    const orderData = await models.orders.find(id, language);
+
     if (!orderData) {
       return res.status(404).json({ message: "Commande non trouvée" });
     }
 
     res.json(orderData);
-
   } catch (error) {
     console.error("Erreur dans fullorder:", error);
     res.status(500).json({ message: "Erreur serveur" });
   }
 };
+
 const finalorder = (req, res) => {
-  const  order = req.body
+  const order = req.body;
 
-  models.orders
-
-  .update(order)
-  .then(([result]) => {
-    if (result.affectedRows === 0) {
-      res.sendStatus(400)
-    } else {
-      res.sendStatus(200)
-    }
-  })
-  .catch((err) => {
-    console.error(err)
-    res.sendStatus(500)
-  })
-}
+  models.orders.update(order)
+    .then(([result]) => {
+      if (result.affectedRows === 0) {
+        res.sendStatus(400);
+      } else {
+        res.sendStatus(200);
+      }
+    })
+    .catch((err) => {
+      console.error(err);
+      res.sendStatus(500);
+    });
+};
 
 module.exports = {
     browse, createnumber, fullorder, finalorder,

@@ -4,19 +4,15 @@ class OrdersManager extends AbstractManager {
   constructor() {
     super({ table: "commande" });
   }
+
   insert(number) {
-
-
     return this.database.query(
-      `insert into ${this.table} (numeroCommande, timestamp, statusCommande) values (?,?,?)`,
-      [
-        number.numeroCommande,
-        number.timestamp,
-        number.statusCommande,
-      ]
-    )
+      `INSERT INTO ${this.table} (numeroCommande, timestamp, statusCommande) VALUES (?, ?, ?)`,
+      [number.numeroCommande, number.timestamp, number.statusCommande]
+    );
   }
-  async find(id) {
+
+  async find(id, language) {
     try {
       const [rows] = await this.database.query(
         `SELECT
@@ -26,16 +22,17 @@ class OrdersManager extends AbstractManager {
           c.timestamp,
           c.statusCommande,
           p.id AS produit_id,
-          p.nomproduit,
-          p.photoProduit,
+          pt.nomproduit,  
+          p.photoProduit, 
           pc.quantiteCommande,
           px.nouveauPrix AS prixUnitaire
         FROM commande c
         LEFT JOIN produit_commande pc ON c.id = pc.commande_id
         LEFT JOIN produit p ON pc.produit_id = p.id
         LEFT JOIN prix px ON p.prix_id = px.id
+        LEFT JOIN product_translations pt ON p.id = pt.produit_id AND pt.language_code = ? 
         WHERE c.id = ?`,
-        [id]
+        [language, id]
       );
 
       if (!rows || rows.length === 0) {
@@ -56,8 +53,8 @@ class OrdersManager extends AbstractManager {
         if (row.produit_id) {
           order.produits.push({
             produit_id: row.produit_id,
-            nomproduit: row.nomproduit,
-            photoProduit: row.photoProduit,
+            nomproduit: row.nomproduit,  // Nom du produit récupéré de product_translations
+            photoProduit: row.photoProduit,  // Photo du produit de la table produit
             quantiteCommande: parseInt(row.quantiteCommande, 10),
             prixUnitaire: parseFloat(row.prixUnitaire)
           });
@@ -71,18 +68,13 @@ class OrdersManager extends AbstractManager {
       throw error;
     }
   }
+
   update(order) {
-
     return this.database.query(
-        `UPDATE ${this.table} SET prixtotalCommande = ?, statusCommande = ? WHERE id = ?`,
-        [
-            order.prixtotalCommande,  
-            order.statusCommande,
-            order.id 
-        ]
+      `UPDATE ${this.table} SET prixtotalCommande = ?, statusCommande = ? WHERE id = ?`,
+      [order.prixtotalCommande, order.statusCommande, order.id]
     );
+  }
 }
-}
-
 
 module.exports = OrdersManager;

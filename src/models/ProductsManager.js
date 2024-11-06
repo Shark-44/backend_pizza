@@ -5,38 +5,82 @@ class ProductsManager extends AbstractManager {
     super({ table: "produit" });
   }
 
-  findAllprice() {
-    return this.database.query(
-      `SELECT 
-      produit.id,
-      produit.nomproduit,
-      produit.descriptionProduit,
-      produit.photoProduit,
-      produit.carte,
-      prix.nouveauPrix 
-      FROM 
-      ${this.table}
-      LEFT JOIN 
-          prix ON produit.prix_id = prix.id; `
-    )
-  }
-  bytype(id) {
-    return this.database.query(
-      `SELECT 
-      produit.id,
-      produit.nomproduit,
-      produit.descriptionProduit,
-      produit.photoProduit,
-      produit.carte,
-      prix.nouveauPrix 
-      FROM 
-      ${this.table}
-      LEFT JOIN 
-          prix ON produit.prix_id = prix.id 
-      WHERE produit.type_id = ?`,
-      [id]
+  findAll( language ) {
+    return this.database.query(`
+      SELECT 
+        p.photoProduit, 
+        p.carte, 
+        p.type_id, 
+        p.prix_id, 
+        pt.nomproduit, 
+        pt.descriptionProduit 
+      FROM ${this.table} p
+      LEFT JOIN product_translations pt
+      ON p.id = pt.produit_id 
+      AND pt.language_code = ?`,
+      [language]
     );
   }
+
+  findAllprice( language ) {
+  
+    return this.database.query(`
+      SELECT 
+        p.id,
+        pt.nomproduit,
+        pt.descriptionProduit,
+        p.photoProduit,
+        p.carte,
+        px.nouveauPrix 
+      FROM ${this.table} p
+      LEFT JOIN prix px 
+      ON p.prix_id = px.id
+      LEFT JOIN product_translations pt
+      ON p.id = pt.produit_id 
+      AND pt.language_code = ?`,
+      [language]
+    );
+  }
+
+  bytype(id, language) {
+    return this.database.query(`
+      SELECT 
+        p.id,
+        pt.nomproduit,
+        pt.descriptionProduit,
+        p.photoProduit,
+        p.carte,
+        px.nouveauPrix 
+      FROM ${this.table} p
+      LEFT JOIN prix px 
+      ON p.prix_id = px.id 
+      LEFT JOIN product_translations pt
+      ON p.id = pt.produit_id 
+      WHERE p.type_id = ?
+      AND pt.language_code = ?`,
+      [id, language]
+    );
+  }
+  findbyid(id, language) {
+    return this.database.query(`
+      SELECT
+        p.id,
+        pt.nomproduit,
+        pt.descriptionProduit,
+        p.photoProduit,
+        p.carte,
+        px.nouveauPrix
+      FROM ${this.table} p
+      LEFT JOIN product_translations pt
+      ON p.id = pt.produit_id
+      LEFT JOIN prix px 
+      ON p.prix_id = px.id
+      WHERE p.id = ?
+      AND pt.language_code = ?`,
+      [id, language]
+    );
+}
+
 }
 
 module.exports = ProductsManager;
