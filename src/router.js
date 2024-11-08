@@ -8,6 +8,7 @@ const productsController = require('./controllers/productsController');
 const typesController = require('./controllers/typesController');
 const ordersController = require('./controllers/ordersController');
 const basketController = require('./controllers/basketController');
+const userController = require('./controllers/userController')
 
 router.get("/test", (req, res) => {
     res.json({ message: "Test route working" });
@@ -25,5 +26,7 @@ router.get("/basket/", basketController.browse)
 router.post("/basket/", basketController.add)
 router.put("/basket/", basketController.upQuantite)
 router.delete("/basket/", basketController.delbasket)
+router.post("/connexion/", userController.login)
+router.get("/connexion/", userController.logout)
 
 module.exports = router
