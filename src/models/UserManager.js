@@ -10,6 +10,14 @@ class UserManager extends AbstractManager {
       name, password,
     ])
   }
+  insert(user) {
+    return this.database.query(
+        `insert into ${this.table} (name, password) values (?, ?)`,
+      [
+        user.name, user.password, 
+      ]
+    )    
+  }
 }
 
 module.exports = UserManager;

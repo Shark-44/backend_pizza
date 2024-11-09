@@ -23,8 +23,22 @@ const login = (req, res) => {
 const logout = (req, res) => {
   res.sendStatus(200);
 };
-
+const createuser = (req, res) => {
+    const user = req.body
+     
+    models.user
+      .insert(user)
+      .then(([result]) => {
+        console.log("Insertion successful:", result.insertId);
+        res.json(result.insertId)
+      })
+      .catch((err) => {
+        console.error("Error in createuser controller:", err);
+        res.sendStatus(500)
+      })
+  }
 module.exports = {
   login,
   logout,
+  createuser,
 };

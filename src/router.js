@@ -28,5 +28,6 @@ router.put("/basket/", basketController.upQuantite)
 router.delete("/basket/", basketController.delbasket)
 router.post("/connexion/", userController.login)
 router.get("/connexion/", userController.logout)
+router.post("/admin-user/", userController.createuser)
 
 module.exports = router
