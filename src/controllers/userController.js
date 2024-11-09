@@ -25,11 +25,11 @@ const logout = (req, res) => {
 };
 const createuser = (req, res) => {
     const user = req.body
+    user.password = req.body.hashedPassword
      
     models.user
       .insert(user)
       .then(([result]) => {
-        console.log("Insertion successful:", result.insertId);
         res.json(result.insertId)
       })
       .catch((err) => {

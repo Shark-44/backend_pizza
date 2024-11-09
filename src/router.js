@@ -3,6 +3,7 @@ const express = require("express")
 const router = express.Router()
 
 const checkLanguage = require("./middlewares/languageMiddleware");
+const { hashPassword, verifyPassword, checkToken } = require("./middlewares/auth")
 
 const productsController = require('./controllers/productsController');
 const typesController = require('./controllers/typesController');
@@ -28,6 +29,6 @@ router.put("/basket/", basketController.upQuantite)
 router.delete("/basket/", basketController.delbasket)
 router.post("/connexion/", userController.login)
 router.get("/connexion/", userController.logout)
-router.post("/admin-user/", userController.createuser)
+router.post("/admin-user/",hashPassword, userController.createuser)
 
 module.exports = router
