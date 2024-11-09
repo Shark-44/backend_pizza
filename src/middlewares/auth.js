@@ -25,9 +25,9 @@ const hashPassword = (req, res, next) => {
 }
 
 const verifyPassword = (req, res, next) => {
+    
   argon2
     .verify(req.user.password, req.body.password)
-
     .then((isVerified) => {
       if (isVerified) {
         const payload = { sub: req.user.id }
@@ -46,7 +46,7 @@ const verifyPassword = (req, res, next) => {
     .catch((err) => {
       console.error(err)
 
-      res.sendStatus(520)
+      res.sendStatus(500)
     })
 }
 const checkToken = async (req, res, next) => {

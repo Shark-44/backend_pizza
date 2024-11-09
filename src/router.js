@@ -27,7 +27,7 @@ router.get("/basket/", basketController.browse)
 router.post("/basket/", basketController.add)
 router.put("/basket/", basketController.upQuantite)
 router.delete("/basket/", basketController.delbasket)
-router.post("/connexion/", userController.login)
+router.post("/connexion/", userController.login, verifyPassword)
 router.get("/connexion/", userController.logout)
 router.post("/admin-user/",hashPassword, userController.createuser)
 
