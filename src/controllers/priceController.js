@@ -3,7 +3,6 @@ const models = require("../models");
 // Pour creer un produit il faut commencer par le prix, ensuite le produit et ajouter la traduction
 const add = (req, res) => {
     const { price, product, translations } = req.body;
-   
     models.price.insert(price)
         .then(([priceResult]) => {
             const prix_id = priceResult.insertId;
