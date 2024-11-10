@@ -13,6 +13,16 @@ const browse = (req, res) => {
     })
 }
 
+const insert = (req, res) => {
+  const product = req.body
+  models.products
+    .insert(product)
+    .catch((err) => {
+      console.error(err)
+      res.sendStatus(500).send({ error: 'Internal Server Error' });
+    })
+}
+
 const withprice = (req, res) => {
   const { language } = req;
 
@@ -26,7 +36,6 @@ const withprice = (req, res) => {
       res.sendStatus(500).send({ error: 'Internal Server Error' });
     })
 }
-
 
 const allbytype = (req, res) => {
   const id = req.query.id
@@ -42,6 +51,7 @@ const allbytype = (req, res) => {
       res.sendStatus(500)
     })
 }
+
 const read = (req, res) => {
   const id = req.params.id;  
   const { language } = req;
@@ -62,5 +72,5 @@ const read = (req, res) => {
 };
 
 module.exports = {
-    browse, allbytype, read, withprice,
+    browse, allbytype, read, withprice, insert,
   }

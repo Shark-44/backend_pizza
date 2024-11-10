@@ -34,6 +34,8 @@ const TypesManager = require("./TypesManager")
 const OrdersManager = require("./OrdersManager")
 const BasketsManager = require("./BasketsManager")
 const UserManager = require("./UserManager")
+const PriceManager = require("./PriceManager")
+const ProductTranslationManager = require("./ProductTranslationManager")
 
 models.products = new ProductsManager()
 models.products.setDatabase(pool)
@@ -49,6 +51,12 @@ models.baskets.setDatabase(pool)
 
 models.user = new UserManager()
 models.user.setDatabase(pool)
+
+models.price = new PriceManager()
+models.price.setDatabase(pool)
+
+models.productTranslation = new ProductTranslationManager()
+models.productTranslation.setDatabase(pool)
 
 const handler = {
   get(obj, prop) {

@@ -10,6 +10,7 @@ const typesController = require('./controllers/typesController');
 const ordersController = require('./controllers/ordersController');
 const basketController = require('./controllers/basketController');
 const userController = require('./controllers/userController')
+const priceController = require('./controllers/priceController')
 
 router.get("/test", (req, res) => {
     res.json({ message: "Test route working" });
@@ -30,5 +31,6 @@ router.delete("/basket/", basketController.delbasket)
 router.post("/connexion/", userController.login, verifyPassword)
 router.get("/connexion/", userController.logout)
 router.post("/admin-user/",hashPassword, userController.createuser)
+router.post("/createproduct/", priceController.add)
 
 module.exports = router

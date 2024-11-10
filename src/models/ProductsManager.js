@@ -80,7 +80,17 @@ class ProductsManager extends AbstractManager {
       [id, language]
     );
 }
-
+  insert(product) {
+    return this.database.query(
+      `insert into ${this.table} (photoProduit, carte, type_id, prix_id) values (?,?,?,?)`,
+      [
+        product.photoProduit,
+        product.carte,
+        product.type_id,
+        product.prix_id
+      ]
+    )
+  }
 }
 
 module.exports = ProductsManager;
