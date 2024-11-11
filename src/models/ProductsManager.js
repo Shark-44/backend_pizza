@@ -31,6 +31,7 @@ class ProductsManager extends AbstractManager {
         pt.descriptionProduit,
         p.photoProduit,
         p.carte,
+        p.type_id,
         px.nouveauPrix 
       FROM ${this.table} p
       LEFT JOIN prix px 
