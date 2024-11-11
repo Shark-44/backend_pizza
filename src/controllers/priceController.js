@@ -32,6 +32,22 @@ const add = (req, res) => {
             res.status(500).send({ error: "Erreur lors de la création du produit" });
         });
 };
-
-module.exports = { add };
+// Mise a jour du prix d'un produit
+const updatebyproduct = (req, res) => {
+    const { dateprix, ancienPrix, nouveauPrix, produit_id } = req.body;
+    models.price
+    .insertforproduct({ dateprix, ancienPrix, nouveauPrix, produit_id })
+    .then(([priceResult]) => {
+        const prix_id = priceResult.insertId;
+        return models.products.updateprice_id(prix_id, produit_id);
+    })
+    .then(() => {
+        res.status(200).send({ message: "Mise a jour du prix pour un produit effectué" });
+    })
+    .catch((err) => {
+        console.error(err);
+        res.status(500).send({ error: "Erreur lors de la mise a jour du prix" });
+    });
+}
+module.exports = { add, updatebyproduct };
 

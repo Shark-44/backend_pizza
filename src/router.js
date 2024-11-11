@@ -36,10 +36,7 @@ router.post("/connexion/", userController.login, verifyPassword)
 router.get("/connexion/", userController.logout)
 router.post("/admin-user/",hashPassword, userController.createuser)
 router.post("/createproduct/", priceController.add)
-router.post(
-  "/upload/:dossier",
-  upload.single("myfile"),
-  uploadController.uploadavecdossier
-)
+router.post("/updateprice/", priceController.updatebyproduct)
+router.post("/upload/:dossier",upload.single("myfile"),uploadController.uploadavecdossier)
 
 module.exports = router

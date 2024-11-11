@@ -14,6 +14,17 @@ class PriceManager extends AbstractManager {
         ]
       )
   }
+  insertforproduct(price) {
+    return this.database.query(
+        `insert into ${this.table} (dateprix, ancienPrix, nouveauPrix, produit_id) values (?,?,?,?)`,
+        [
+            price.dateprix,
+            price.ancienPrix,
+            price.nouveauPrix,
+            price.produit_id
+        ]
+      )
+  }
   updateProduitId(prix_id, produit_id) {
     return this.database.query(
       `UPDATE ${this.table} SET produit_id = ? WHERE id = ?`,

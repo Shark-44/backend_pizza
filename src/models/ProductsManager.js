@@ -92,6 +92,14 @@ class ProductsManager extends AbstractManager {
       ]
     )
   }
+  updateprice_id(prix_id, produit_id) {
+    return this.database.query(
+      `UPDATE ${this.table} SET prix_id = ? WHERE id = ?`,
+      [
+        prix_id, produit_id
+      ]
+    )
+  }
 }
 
 module.exports = ProductsManager;
