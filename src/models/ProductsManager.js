@@ -31,6 +31,7 @@ class ProductsManager extends AbstractManager {
         pt.descriptionProduit,
         p.photoProduit,
         p.carte,
+        p.type_id,
         px.nouveauPrix 
       FROM ${this.table} p
       LEFT JOIN prix px 
@@ -80,7 +81,25 @@ class ProductsManager extends AbstractManager {
       [id, language]
     );
 }
-
+  insert(product) {
+    return this.database.query(
+      `insert into ${this.table} (photoProduit, carte, type_id, prix_id) values (?,?,?,?)`,
+      [
+        product.photoProduit,
+        product.carte,
+        product.type_id,
+        product.prix_id
+      ]
+    )
+  }
+  updateprice_id(prix_id, produit_id) {
+    return this.database.query(
+      `UPDATE ${this.table} SET prix_id = ? WHERE id = ?`,
+      [
+        prix_id, produit_id
+      ]
+    )
+  }
 }
 
 module.exports = ProductsManager;
