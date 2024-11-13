@@ -13,6 +13,20 @@ const browse = (req, res) => {
       res.sendStatus(500)
     })
 }
+const browsehistory = (req, res) => {
+  const { language } = req;
+  
+  models.orders
+    .forhistory(language)
+    .then((rows) => {
+      res.send(rows);
+   // console.log("Données envoyées :", JSON.stringify(rows, null, 2));
+    })
+    .catch((err) => {
+      console.error("Erreur dans browsehistory:", err);
+      res.sendStatus(500);
+    });
+};
 const createnumber = (req, res) => {
   const { numeroCommande, timestamp, statusCommande } = req.body;
   
@@ -66,5 +80,5 @@ const finalorder = (req, res) => {
 };
 
 module.exports = {
-    browse, createnumber, fullorder, finalorder,
+    browse, createnumber, fullorder, finalorder, browsehistory,
   }
