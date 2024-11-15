@@ -17,6 +17,20 @@ class UserManager extends AbstractManager {
       ]
     )    
   }
+  resetFailedAttempts(userId) {
+    return this.database.query(
+      `UPDATE ${this.table} SET failed_attempts = 0 WHERE iduser = ?`,
+      [userId]
+    );
+  }
+  incrementFailedAttempts(userId) {
+    console.log("j'entre ici");
+    return this.database.query(
+      `UPDATE ${this.table} SET failed_attempts = failed_attempts + 1, last_failed_attempt = NOW() WHERE iduser = ?`,
+      [userId]
+    );
+  }
+  
 }
 
 module.exports = UserManager;
