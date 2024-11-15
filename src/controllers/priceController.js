@@ -34,12 +34,12 @@ const add = (req, res) => {
 };
 // Mise a jour du prix d'un produit
 const updatebyproduct = (req, res) => {
-    const { dateprix, ancienPrix, nouveauPrix, produit_id } = req.body;
+    const { dateprix, ancienPrix, nouveauPrix, produitId } = req.body;
     models.price
-    .insertforproduct({ dateprix, ancienPrix, nouveauPrix, produit_id })
+    .insertforproduct({ dateprix, ancienPrix, nouveauPrix, produitId })
     .then(([priceResult]) => {
-        const prix_id = priceResult.insertId;
-        return models.products.updateprice_id(prix_id, produit_id);
+        const prixId = priceResult.insertId;
+        return models.products.updateprice_id(prixId, produitId);
     })
     .then(() => {
         res.status(200).send({ message: "Mise a jour du prix pour un produit effectué" });

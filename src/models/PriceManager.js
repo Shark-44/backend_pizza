@@ -21,14 +21,14 @@ class PriceManager extends AbstractManager {
             price.dateprix,
             price.ancienPrix,
             price.nouveauPrix,
-            price.produit_id
+            price.produitId
         ]
       )
   }
-  updateProduitId(prix_id, produit_id) {
+  updateProduitId(prixId, produitId) {
     return this.database.query(
       `UPDATE ${this.table} SET produit_id = ? WHERE id = ?`,
-      [produit_id, prix_id]  
+      [produitId, prixId]  
     );
   }
 }
