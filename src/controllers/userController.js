@@ -22,7 +22,7 @@ const login = (req, res, next) => {
   
 
 const logout = (req, res) => {
-  res.sendStatus(200);
+  res .clearCookie("auth_token","user_id").sendStatus(200);
 };
 const createuser = (req, res) => {
     const user = req.body
