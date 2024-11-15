@@ -29,7 +29,7 @@ CREATE TABLE `commande` (
   `timestamp` datetime DEFAULT CURRENT_TIMESTAMP,
   `statusCommande` enum('en cours','payé') DEFAULT 'en cours',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=20 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=25 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -38,7 +38,7 @@ CREATE TABLE `commande` (
 
 LOCK TABLES `commande` WRITE;
 /*!40000 ALTER TABLE `commande` DISABLE KEYS */;
-INSERT INTO `commande` VALUES (2,'E001',81.50,'2024-10-30 14:35:26','payé'),(4,'E001',50.50,'2024-11-03 15:08:34','payé'),(5,'E002',8.00,'2024-11-03 16:52:26','payé'),(6,'E003',27.50,'2024-11-03 16:54:08','payé'),(7,'E004',34.00,'2024-11-03 16:55:42','payé'),(8,'E005',50.50,'2024-11-03 16:57:05','payé'),(9,'E006',97.50,'2024-11-03 16:59:10','payé'),(10,'E007',66.50,'2024-11-03 17:15:15','payé'),(11,'E001',32.50,'2024-11-04 08:28:53','payé'),(12,'E002',37.00,'2024-11-04 08:29:18','payé'),(13,'E003',24.00,'2024-11-04 08:29:46','payé'),(14,'E004',34.50,'2024-11-04 08:30:02','payé'),(15,'E005',34.50,'2024-11-04 08:34:57','payé'),(16,'E006',26.00,'2024-11-04 10:20:35','payé'),(17,'E001',32.50,'2024-11-05 12:37:46','payé'),(18,'E001',23.00,'2024-11-06 21:18:20','payé'),(19,'E001',27.50,'2024-11-07 15:00:30','payé');
+INSERT INTO `commande` VALUES (2,'A001',81.50,'2024-10-30 14:35:26','payé'),(4,'E001',50.50,'2024-11-03 15:08:34','payé'),(5,'E002',8.00,'2024-11-03 16:52:26','payé'),(6,'E003',27.50,'2024-11-03 16:54:08','payé'),(7,'E004',34.00,'2024-11-03 16:55:42','payé'),(8,'E005',50.50,'2024-11-03 16:57:05','payé'),(9,'E006',97.50,'2024-11-03 16:59:10','payé'),(10,'E007',66.50,'2024-11-03 17:15:15','payé'),(11,'E001',32.50,'2024-11-04 08:28:53','payé'),(12,'E002',37.00,'2024-11-04 08:29:18','payé'),(13,'E003',24.00,'2024-11-04 08:29:46','payé'),(14,'E004',34.50,'2024-11-04 08:30:02','payé'),(15,'E005',34.50,'2024-11-04 08:34:57','payé'),(16,'E006',26.00,'2024-11-04 10:20:35','payé'),(17,'E001',32.50,'2024-11-05 12:37:46','payé'),(18,'E001',23.00,'2024-11-06 21:18:20','payé'),(19,'E001',27.50,'2024-11-07 15:00:30','payé'),(20,'E002',11.50,'2024-11-07 15:58:03','payé'),(21,'E001',36.30,'2024-11-08 08:39:49','payé'),(22,'E001',28.50,'2024-11-11 22:03:38','payé'),(23,'E001',11.70,'2024-11-12 13:57:15','payé'),(24,'E001',NULL,'2024-11-15 15:27:41','en cours');
 /*!40000 ALTER TABLE `commande` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -54,8 +54,10 @@ CREATE TABLE `prix` (
   `dateprix` date NOT NULL,
   `ancienPrix` decimal(10,2) DEFAULT NULL,
   `nouveauPrix` decimal(10,2) DEFAULT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+  `produit_id` int DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `prix_produit_fk` (`produit_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=30 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -64,7 +66,7 @@ CREATE TABLE `prix` (
 
 LOCK TABLES `prix` WRITE;
 /*!40000 ALTER TABLE `prix` DISABLE KEYS */;
-INSERT INTO `prix` VALUES (1,'2024-10-20',11.50,11.50),(2,'2024-10-20',8.00,8.00),(3,'2024-10-20',13.00,13.00),(4,'2024-10-20',14.50,14.50),(5,'2024-10-20',15.50,15.50),(6,'2024-10-20',15.00,15.00),(11,'2024-10-20',14.00,14.00),(12,'2024-10-20',14.00,14.00),(13,'2024-10-20',14.50,14.50);
+INSERT INTO `prix` VALUES (1,'2024-10-20',11.50,11.50,1),(2,'2024-10-20',8.00,8.00,2),(3,'2024-10-20',13.00,13.00,3),(4,'2024-10-20',14.50,14.50,4),(5,'2024-10-20',15.50,15.50,5),(6,'2024-10-20',15.00,15.00,6),(11,'2024-10-20',14.00,14.00,7),(12,'2024-10-20',14.00,14.00,8),(13,'2024-10-20',14.50,14.50,9),(25,'2024-11-11',11.50,11.60,1),(26,'2024-11-11',8.00,7.90,2),(27,'2024-11-11',13.00,13.10,3),(28,'2024-11-11',15.50,15.40,5),(29,'2024-11-12',11.60,11.70,1);
 /*!40000 ALTER TABLE `prix` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -79,12 +81,12 @@ CREATE TABLE `product_translations` (
   `id` int NOT NULL AUTO_INCREMENT,
   `produit_id` int NOT NULL,
   `language_code` varchar(5) NOT NULL,
-  `nomproduit` varchar(255) NOT NULL,
+  `nomProduit` varchar(255) NOT NULL,
   `descriptionProduit` text,
   PRIMARY KEY (`id`),
   UNIQUE KEY `unique_translation` (`produit_id`,`language_code`),
   CONSTRAINT `product_translations_ibfk_1` FOREIGN KEY (`produit_id`) REFERENCES `produit` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=34 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=52 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -115,7 +117,7 @@ CREATE TABLE `produit` (
   KEY `prix_id` (`prix_id`),
   CONSTRAINT `produit_ibfk_1` FOREIGN KEY (`type_id`) REFERENCES `type` (`id`),
   CONSTRAINT `produit_ibfk_2` FOREIGN KEY (`prix_id`) REFERENCES `prix` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -124,7 +126,7 @@ CREATE TABLE `produit` (
 
 LOCK TABLES `produit` WRITE;
 /*!40000 ALTER TABLE `produit` DISABLE KEYS */;
-INSERT INTO `produit` VALUES (1,'/assets/images/pizza/Royale.webp',1,1,1),(2,'/assets/images/pizza/Marguerita.webp',1,1,2),(3,'/assets/images/pizza/Vegetarienne.webp',1,1,3),(4,'/assets/images/pizza/5-fromages.webp',1,1,4),(5,'/assets/images/pizza/Mexicaine.webp',1,1,5),(6,'/assets/images/pizza/Espagnole.webp',1,1,6),(7,'/assets/images/pates/Bolognaise.webp',1,2,11),(8,'/assets/images/pates/Carbonara.webp',1,2,12),(9,'/assets/images/pates/Sorriza.webp',1,2,13);
+INSERT INTO `produit` VALUES (1,'/assets/images/pizza/Royale.webp',1,1,29),(2,'/assets/images/pizza/Marguerita.webp',1,1,26),(3,'/assets/images/pizza/Vegetarienne.webp',1,1,27),(4,'/assets/images/pizza/5-fromages.webp',1,1,4),(5,'/assets/images/pizza/Mexicaine.webp',1,1,28),(6,'/assets/images/pizza/Espagnole.webp',1,1,6),(7,'/assets/images/pates/Bolognaise.webp',1,2,11),(8,'/assets/images/pates/Carbonara.webp',1,2,12),(9,'/assets/images/pates/Sorriza.webp',1,2,13);
 /*!40000 ALTER TABLE `produit` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -152,7 +154,7 @@ CREATE TABLE `produit_commande` (
 
 LOCK TABLES `produit_commande` WRITE;
 /*!40000 ALTER TABLE `produit_commande` DISABLE KEYS */;
-INSERT INTO `produit_commande` VALUES (1,2,3),(1,4,3),(1,5,2),(1,6,1),(1,8,1),(1,9,3),(1,10,1),(1,11,1),(1,14,3),(1,15,3),(1,16,1),(1,17,1),(1,18,2),(1,19,1),(2,2,1),(2,4,2),(2,5,1),(2,6,2),(2,7,1),(2,9,3),(2,10,2),(2,11,1),(2,12,3),(2,13,3),(2,17,1),(2,19,2),(3,2,3),(3,5,1),(3,7,2),(3,8,3),(3,9,3),(3,10,3),(3,11,1),(3,12,1),(3,17,1),(4,16,1);
+INSERT INTO `produit_commande` VALUES (1,2,3),(1,4,3),(1,5,2),(1,6,1),(1,8,1),(1,9,3),(1,10,1),(1,11,1),(1,14,3),(1,15,3),(1,16,1),(1,17,1),(1,18,2),(1,19,1),(1,20,1),(1,21,2),(1,23,1),(2,2,1),(2,4,2),(2,5,1),(2,6,2),(2,7,1),(2,9,3),(2,10,2),(2,11,1),(2,12,3),(2,13,3),(2,17,1),(2,19,2),(3,2,3),(3,5,1),(3,7,2),(3,8,3),(3,9,3),(3,10,3),(3,11,1),(3,12,1),(3,17,1),(3,21,1),(4,16,1),(7,22,1),(9,22,1);
 /*!40000 ALTER TABLE `produit_commande` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -190,11 +192,11 @@ CREATE TABLE `type_translations` (
   `id` int NOT NULL AUTO_INCREMENT,
   `type_id` int NOT NULL,
   `language_code` varchar(5) NOT NULL,
-  `nomtype` varchar(255) NOT NULL,
+  `nomType` varchar(255) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `unique_translation` (`type_id`,`language_code`),
   CONSTRAINT `type_translations_ibfk_1` FOREIGN KEY (`type_id`) REFERENCES `type` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=53 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -203,8 +205,33 @@ CREATE TABLE `type_translations` (
 
 LOCK TABLES `type_translations` WRITE;
 /*!40000 ALTER TABLE `type_translations` DISABLE KEYS */;
-INSERT INTO `type_translations` VALUES (34,1,'fr','Pizza'),(35,2,'fr','Pate'),(36,3,'fr','Entrée'),(37,4,'fr','Dessert'),(38,5,'fr','Boisson'),(39,6,'fr','Kid'),(41,1,'gb','Pizza'),(42,2,'gb','Pasta'),(43,3,'gb','Starter'),(44,4,'gb','Dessert'),(45,5,'gb','Drink'),(46,6,'gb','Kid'),(47,1,'it','Pizza'),(48,2,'it','Pasta'),(49,3,'it','Antipasto'),(50,4,'it','Dessert'),(51,5,'it','Bevanda'),(52,6,'it','Bambino');
+INSERT INTO `type_translations` VALUES (1,1,'fr','Pizza'),(2,2,'fr','Pate'),(3,3,'fr','Entrée'),(4,4,'fr','Dessert'),(5,5,'fr','Boisson'),(6,6,'fr','Kid'),(7,1,'gb','Pizza'),(8,2,'gb','Pasta'),(9,3,'gb','Starter'),(10,4,'gb','Dessert'),(11,5,'gb','Drink'),(12,6,'gb','Kid'),(13,1,'it','Pizza'),(14,2,'it','Pasta'),(15,3,'it','Antipasto'),(16,4,'it','Dessert'),(17,5,'it','Bevanda'),(18,6,'it','Bambino');
 /*!40000 ALTER TABLE `type_translations` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `user`
+--
+
+DROP TABLE IF EXISTS `user`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `user` (
+  `iduser` int NOT NULL AUTO_INCREMENT,
+  `name` varchar(45) DEFAULT NULL,
+  `password` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`iduser`)
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `user`
+--
+
+LOCK TABLES `user` WRITE;
+/*!40000 ALTER TABLE `user` DISABLE KEYS */;
+INSERT INTO `user` VALUES (6,'TOTO','$argon2id$v=19$m=65536,t=5,p=1$FDBd4mLSWtflAHBDNqJiMQ$1EZrixL4BaiAXWRqlT7bosh8QYDU7cvDktOeGDc13FI');
+/*!40000 ALTER TABLE `user` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
@@ -216,4 +243,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-11-07 15:11:25
+-- Dump completed on 2024-11-15 18:21:15
