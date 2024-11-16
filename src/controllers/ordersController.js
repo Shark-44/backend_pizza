@@ -13,14 +13,15 @@ const browse = (req, res) => {
       res.sendStatus(500)
     })
 }
-const browsehistory = (req, res) => {
+ //console.log("Données envoyées :", JSON.stringify(rows, null, 2));
+ const browsehistory = (req, res) => {
   const { language } = req;
-  
+  const filter = req.query.filter; 
+
   models.orders
-    .forhistory(language)
+    .forhistory(language, filter)
     .then((rows) => {
       res.send(rows);
-  //console.log("Données envoyées :", JSON.stringify(rows, null, 2));
     })
     .catch((err) => {
       console.error("Erreur dans browsehistory:", err);

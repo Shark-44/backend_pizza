@@ -74,8 +74,44 @@ class OrdersManager extends AbstractManager {
     );
   }
 
-  async forhistory(language) {
+
+  async forhistory(language, filter = null) {
+    
     try {
+      let dateFilter = '';
+      let params = [language, language];
+
+      // Condition de date
+      if (filter) {
+        const today = new Date();
+        let dateFrom, dateTo;
+
+        switch (filter) {
+          case 'Y':
+            dateFrom = new Date(today.getFullYear(), 0, 1);
+            dateTo = new Date(today.getFullYear() + 1, 0, 1);
+            break;
+          case 'M':
+            dateFrom = new Date(today.getFullYear(), today.getMonth(), 1);
+            dateTo = new Date(today.getFullYear(), today.getMonth() + 1, 0);
+            break;
+          case 'W':
+            const firstDayOfWeek = today.getDate() - today.getDay();
+            dateFrom = new Date(new Date(today).setDate(firstDayOfWeek));
+            dateTo = new Date(new Date(today).setDate(firstDayOfWeek + 7));
+            break;
+          case 'D':
+            dateFrom = new Date(new Date(today).setHours(0, 0, 0, 0));
+            dateTo = new Date(new Date(today).setHours(23, 59, 59, 999));
+            break;
+        }
+
+        if (dateFrom && dateTo) {
+          dateFilter = ' AND c.timestamp BETWEEN ? AND ?';
+          params.push(dateFrom, dateTo);
+        }
+      }
+
       const [rows] = await this.database.query(
         `SELECT
           c.id,
@@ -93,19 +129,20 @@ class OrdersManager extends AbstractManager {
         LEFT JOIN product_translations pt ON p.id = pt.produit_id AND pt.language_code = ?
         LEFT JOIN type t ON t.id = p.type_id
         LEFT JOIN type_translations tt ON t.id = tt.type_id AND tt.language_code = ?
-        ORDER BY c.timestamp DESC`, [language, language]
+        WHERE 1=1${dateFilter}
+        ORDER BY c.timestamp DESC`, 
+        params
       );
   
       if (!rows || rows.length === 0) return [];
   
-      const commandesParId = new Map();  // Utilisation de l'ID de commande comme clé principale
+      const commandesParId = new Map();
       const produitsARecuperer = [];
   
-      // Étape 1: Organiser les commandes et produits tout en vérifiant les doublons
+      // Le reste de la logique reste identique
       for (const row of rows) {
-        const commandeId = row.id;  // Utilisation de l'ID de commande pour éviter les doublons
+        const commandeId = row.id;
   
-        // Si la commande n'existe pas encore dans la Map, l'ajouter
         if (!commandesParId.has(commandeId)) {
           commandesParId.set(commandeId, {
             id: row.id,
@@ -114,11 +151,10 @@ class OrdersManager extends AbstractManager {
             statusCommande: row.status_commande,
             timestamp: row.timestamp,
             products: [],
-            count: 0  // Ajouter un compteur pour chaque commande
+            count: 0
           });
         }
   
-        // Incrémenter le compteur pour cette commande (si doublon, c'est une nouvelle entrée pour la même commande)
         const commande = commandesParId.get(commandeId);
         commande.count += 1;
   
@@ -130,7 +166,6 @@ class OrdersManager extends AbstractManager {
             nomtype: row.nom_type
           };
   
-          // Ajouter ce produit à la liste pour récupérer son prix plus tard
           produitsARecuperer.push({
             produit_id: row.produit_id,
             timestamp: row.timestamp,
@@ -141,7 +176,6 @@ class OrdersManager extends AbstractManager {
         }
       }
   
-      // Étape 2: Récupérer les prix pour chaque produit
       const prixPromises = produitsARecuperer.map(({ produit_id, timestamp, produit }) =>
         this.database.query(
           `SELECT nouveauPrix, produit_id, dateprix FROM prix WHERE produit_id = ? AND dateprix <= ? ORDER BY dateprix DESC LIMIT 1`,
@@ -153,30 +187,22 @@ class OrdersManager extends AbstractManager {
         })
       );
   
-      // Attendre que tous les prix soient récupérés
       await Promise.all(prixPromises);
   
-      // Étape 3: Formater les résultats avec les produits et leurs prix
-      const resultat = Array.from(commandesParId.values()).map(commande => {
-        // Définir le commandeKey comme étant le nombre d'ID distincts dans la commande
-        const commandeKey = commande.count;  // Le nombre d'occurrences de l'ID de la commande dans les résultats
-  
-        return {
-          
-          id: commande.id,
-          numeroCommande: commande.numeroCommande,
-          prixtotalCommande: parseFloat(commande.prixtotalCommande || 0).toFixed(2),
-          statusCommande: commande.statusCommande,
-          timestamp: commande.timestamp,
-          products: commande.products.map(product => ({
-            produitId: product.produit_id,
-            quantiteCommande: product.quantiteCommande,
-            nouveauPrix: product.nouveauPrix,
-            nomProduit: product.nomProduit,
-            nomType: product.nomtype
-          }))
-        };
-      });
+      const resultat = Array.from(commandesParId.values()).map(commande => ({
+        id: commande.id,
+        numeroCommande: commande.numeroCommande,
+        prixtotalCommande: parseFloat(commande.prixtotalCommande || 0).toFixed(2),
+        statusCommande: commande.statusCommande,
+        timestamp: commande.timestamp,
+        products: commande.products.map(product => ({
+          produitId: product.produit_id,
+          quantiteCommande: product.quantiteCommande,
+          nouveauPrix: product.nouveauPrix,
+          nomProduit: product.nomproduit,
+          nomType: product.nomtype
+        }))
+      }));
   
       return resultat;
   
@@ -185,8 +211,6 @@ class OrdersManager extends AbstractManager {
       throw new Error("Erreur lors de la récupération de l'historique des commandes");
     }
   }
-  
-  
 
   
 }
