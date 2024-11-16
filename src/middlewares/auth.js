@@ -1,6 +1,7 @@
 const argon2 = require("argon2")
 const jwt = require("jsonwebtoken")
 const { decodeJWT } = require("../helper/jwtHelper")
+const models = require("../models");
 
 const hashingOptions = {
   type: argon2.argon2id,
@@ -25,31 +26,49 @@ const hashPassword = (req, res, next) => {
 }
 
 const verifyPassword = (req, res, next) => {
-    
+  const { password } = req.body;
+  
   argon2
-    .verify(req.user.password, req.body.password)
+    .verify(req.user.password, password)
     .then((isVerified) => {
       if (isVerified) {
-        const payload = { sub: req.user.id }
+        
+        models.user.resetFailedAttempts(req.user.iduser)
+          .then(() => {
+            const payload = { sub: req.user.id };
+            const token = jwt.sign(payload, process.env.JWT_SECRET, {
+              expiresIn: "1h",
+            });
 
-        const token = jwt.sign(payload, process.env.JWT_SECRET, {
-          expiresIn: "1h",
-        })
+            delete req.user.password;
 
-        delete req.user.password
-        res.cookie("auth_token", token, { httpOnly: true, secure: false });
-        res.cookie("userId", req.user.iduser, { httpOnly: false, secure: false });
-        res.send({ utilisateur: req.user })
+            res.cookie("auth_token", token, { httpOnly: true, secure: false });
+            res.cookie("userId", req.user.iduser, { httpOnly: false, secure: false });
+
+            return res.send({ utilisateur: req.user });
+          })
+          .catch((err) => {
+            console.error(err);
+            return res.sendStatus(500);
+          });
       } else {
-        res.sendStatus(401).send("Invalid Credentials")
+        
+        models.user.incrementFailedAttempts(req.user.iduser)
+          .then(() => {
+            return res.status(401).send("Invalid Credentials");
+          })
+          .catch((err) => {
+            console.error(err);
+            return res.sendStatus(500);
+          });
       }
     })
     .catch((err) => {
-      console.error(err)
+      console.error(err);
+      return res.sendStatus(500);
+    });
+};
 
-      res.sendStatus(500)
-    })
-}
 const checkToken = async (req, res, next) => {
   try {
     // eslint-disable-next-line dot-notation

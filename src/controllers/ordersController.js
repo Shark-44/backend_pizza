@@ -20,7 +20,7 @@ const browsehistory = (req, res) => {
     .forhistory(language)
     .then((rows) => {
       res.send(rows);
-   // console.log("Données envoyées :", JSON.stringify(rows, null, 2));
+  //console.log("Données envoyées :", JSON.stringify(rows, null, 2));
     })
     .catch((err) => {
       console.error("Erreur dans browsehistory:", err);

@@ -22,7 +22,7 @@ class OrdersManager extends AbstractManager {
           c.timestamp,
           c.statusCommande,
           p.id AS produit_id,
-          pt.nomproduit,  
+          pt.nomProduit,  
           p.photoProduit, 
           pc.quantiteCommande,
           px.nouveauPrix AS prixUnitaire
@@ -50,8 +50,8 @@ class OrdersManager extends AbstractManager {
       rows.forEach(row => {
         if (row.produit_id) {
           order.produits.push({
-            produit_id: row.produit_id,
-            nomproduit: row.nomproduit,
+            produitId: row.produitId,
+            nomProduit: row.nomProduit,
             photoProduit: row.photoProduit,
             quantiteCommande: parseInt(row.quantiteCommande, 10),
             prixUnitaire: parseFloat(row.prixUnitaire)
@@ -169,11 +169,11 @@ class OrdersManager extends AbstractManager {
           statusCommande: commande.statusCommande,
           timestamp: commande.timestamp,
           products: commande.products.map(product => ({
-            produit_id: product.produit_id,
+            produitId: product.produit_id,
             quantiteCommande: product.quantiteCommande,
             nouveauPrix: product.nouveauPrix,
-            nomproduit: product.nomproduit,
-            nomtype: product.nomtype
+            nomProduit: product.nomProduit,
+            nomType: product.nomtype
           }))
         };
       });

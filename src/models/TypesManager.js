@@ -6,7 +6,7 @@ class TypesManager extends AbstractManager {
     }
   findAll( language ) {
     return this.database.query(`
-    SELECT t.id, tt.nomtype
+    SELECT t.id, tt.nomType
     FROM ${this.table} t
     LEFT JOIN type_translations tt
     ON t.id = tt.type_id

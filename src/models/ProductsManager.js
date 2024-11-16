@@ -12,7 +12,7 @@ class ProductsManager extends AbstractManager {
         p.carte, 
         p.type_id, 
         p.prix_id, 
-        pt.nomproduit, 
+        pt.nomProduit, 
         pt.descriptionProduit 
       FROM ${this.table} p
       LEFT JOIN product_translations pt
@@ -27,7 +27,7 @@ class ProductsManager extends AbstractManager {
     return this.database.query(`
       SELECT 
         p.id,
-        pt.nomproduit,
+        pt.nomProduit,
         pt.descriptionProduit,
         p.photoProduit,
         p.carte,
@@ -47,7 +47,7 @@ class ProductsManager extends AbstractManager {
     return this.database.query(`
       SELECT 
         p.id,
-        pt.nomproduit,
+        pt.nomProduit,
         pt.descriptionProduit,
         p.photoProduit,
         p.carte,
@@ -66,7 +66,7 @@ class ProductsManager extends AbstractManager {
     return this.database.query(`
       SELECT
         p.id,
-        pt.nomproduit,
+        pt.nomProduit,
         pt.descriptionProduit,
         p.photoProduit,
         p.carte,
@@ -87,16 +87,16 @@ class ProductsManager extends AbstractManager {
       [
         product.photoProduit,
         product.carte,
-        product.type_id,
-        product.prix_id
+        product.typeId,
+        product.prixId
       ]
     )
   }
-  updateprice_id(prix_id, produit_id) {
+  updateprice_id(prixId, produitId) {
     return this.database.query(
       `UPDATE ${this.table} SET prix_id = ? WHERE id = ?`,
       [
-        prix_id, produit_id
+        prixId, produitId
       ]
     )
   }

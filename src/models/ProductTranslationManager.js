@@ -6,11 +6,11 @@ class ProductTranslationManager extends AbstractManager {
   }
   insert(translation) {
     return this.database.query(
-      `insert into ${this.table} (produit_id, language_code, nomproduit, descriptionProduit) values (?,?,?,?)`,
+      `insert into ${this.table} (produit_id, language_code, nomProduit, descriptionProduit) values (?,?,?,?)`,
       [
-        translation.produit_id,
+        translation.produitId,
         translation.language_code,
-        translation.nomproduit,
+        translation.nomProduit,
         translation.descriptionProduit,
       ]
     )

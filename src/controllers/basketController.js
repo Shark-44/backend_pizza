@@ -13,16 +13,16 @@ const browse = (req, res) => {
     })
 }
 const add = (req, res) => {
-    const {produit_id, commande_id, quantiteCommande} = req.body
+    const {produitId, commandeId, quantiteCommande} = req.body
 
-    if (!produit_id|| !commande_id || !quantiteCommande) {
+    if (!produitId|| !commandeId || !quantiteCommande) {
       return res.status(400).json({ error: "Données manquantes" });
     }
    
     models.baskets
-    .insert({produit_id, commande_id, quantiteCommande})
+    .insert({produitId, commandeId, quantiteCommande})
     .then(([result]) => {
-      res.json({ produit_id, commande_id, quantiteCommande });
+      res.json({ produitId, commandeId, quantiteCommande });
     })
     .catch((err) => {
       console.error(err)

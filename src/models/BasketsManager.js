@@ -8,8 +8,8 @@ class BasketsManager extends AbstractManager {
     return this.database.query(
       `insert into ${this.table} (produit_id, commande_id, quantiteCommande) values (?,?,?)`,
       [
-        basket.produit_id,
-        basket.commande_id,
+        basket.produitId,
+        basket.commandeId,
         basket.quantiteCommande,
       ]
     )
@@ -19,23 +19,20 @@ class BasketsManager extends AbstractManager {
         `UPDATE ${this.table} SET quantiteCommande = ? WHERE produit_id = ? AND commande_id = ?`,
       [
         basket.quantiteCommande,  
-        basket.produit_id,        
-        basket.commande_id,      
+        basket.produitId,        
+        basket.commandeId,      
       ]
     );
   }
   destroy(basket) {
-   
     return this.database.query(
       `DELETE FROM ${this.table}  WHERE produit_id = ? AND commande_id = ?`,
       [
-        basket.produit_id,        
-        basket.commande_id,      
+        basket.produitId,        
+        basket.commandeId,      
       ]
     )
-
   }
-
 }
 
 module.exports = BasketsManager;

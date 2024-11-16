@@ -8,6 +8,14 @@ const login = (req, res, next) => {
       .then(([user]) => {
         
         if (user[0] != null) {
+          const failedAttempts = user[0].failed_attempts;
+          const lastFailedAttempt = new Date(user[0].last_failed_attempt);
+          const now = new Date();
+          // compteur de mauvaise connection a limite de 3 pendant 15 min
+          if (failedAttempts >= 3 && (now - lastFailedAttempt) < 15 * 60 * 1000) {
+            return res.status(403).send("Trop de tentatives échouées. Essayez plus tard.");
+          }
+  
           req.user = user[0];  
           next();               
         } else {
@@ -19,10 +27,11 @@ const login = (req, res, next) => {
         res.status(500).send("Erreur lors de la récupération des données");
       });
   };
-  
+
+
 
 const logout = (req, res) => {
-  res .clearCookie("auth_token","userId").sendStatus(200);
+  res.clearCookie("auth_token").clearCookie("userId").sendStatus(200);
 };
 const createuser = (req, res) => {
     const user = req.body
