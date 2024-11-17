@@ -85,33 +85,38 @@ class OrdersManager extends AbstractManager {
       if (filter) {
         const today = new Date();
         let dateFrom, dateTo;
-
+  
         switch (filter) {
           case 'Y':
             dateFrom = new Date(today.getFullYear(), 0, 1);
-            dateTo = new Date(today.getFullYear() + 1, 0, 1);
+            dateTo = today;
             break;
           case 'M':
-            dateFrom = new Date(today.getFullYear(), today.getMonth(), 1);
-            dateTo = new Date(today.getFullYear(), today.getMonth() + 1, 0);
+            dateFrom = new Date(today.getFullYear(), today.getMonth() - 1, today.getDate());
+            dateTo = today;
             break;
           case 'W':
-            const firstDayOfWeek = today.getDate() - today.getDay();
-            dateFrom = new Date(new Date(today).setDate(firstDayOfWeek));
-            dateTo = new Date(new Date(today).setDate(firstDayOfWeek + 7));
+            dateFrom = new Date(today);
+            dateFrom.setDate(today.getDate() - 7);
+            dateTo = today;
             break;
           case 'D':
-            dateFrom = new Date(new Date(today).setHours(0, 0, 0, 0));
-            dateTo = new Date(new Date(today).setHours(23, 59, 59, 999));
+            dateFrom = new Date(today);
+            dateFrom.setDate(today.getDate() - 1);
+            dateTo = today;
             break;
         }
 
         if (dateFrom && dateTo) {
+          
+          dateFrom.setHours(0, 0, 0, 0);
+          dateTo.setHours(23, 59, 59, 999);
+          
           dateFilter = ' AND c.timestamp BETWEEN ? AND ?';
           params.push(dateFrom, dateTo);
         }
       }
-
+ 
       const [rows] = await this.database.query(
         `SELECT
           c.id,
@@ -130,7 +135,7 @@ class OrdersManager extends AbstractManager {
         LEFT JOIN type t ON t.id = p.type_id
         LEFT JOIN type_translations tt ON t.id = tt.type_id AND tt.language_code = ?
         WHERE 1=1${dateFilter}
-        ORDER BY c.timestamp DESC`, 
+        ORDER BY c.timestamp DESC`,
         params
       );
   
@@ -139,7 +144,6 @@ class OrdersManager extends AbstractManager {
       const commandesParId = new Map();
       const produitsARecuperer = [];
   
-      // Le reste de la logique reste identique
       for (const row of rows) {
         const commandeId = row.id;
   
